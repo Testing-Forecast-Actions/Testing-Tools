@@ -42,7 +42,7 @@ def run (jsonInputFile):
 
 
 if __name__ == "__main__":
-    print ("### Testing script")
+    print ("### Testing tools_verify script")
 
     # if len(sys.argv) <= 1 :
     #   print ("Missing input. Abort!")
