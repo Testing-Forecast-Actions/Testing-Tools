@@ -52,7 +52,7 @@ if __name__ == "__main__":
     # print ("Input data: \n {}".format(input_data_json))
 
     runningPath = os.path.dirname(__file__)
-    jsonInputFile = os.path.join(runningPath, '..', 'assets', 'repo_access_mapping.json')
+    jsonInputFile = os.path.join(runningPath, '..', 'assets', 'repo_mapping.json')
 
     print ("### Running path: {0}, file: {1}".format(runningPath, jsonInputFile))
     run(jsonInputFile)
