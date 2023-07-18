@@ -1,0 +1,16 @@
+{
+  "mapping" : {
+    "teams" : [
+      {
+        "name" : "ISI",
+        "model" : "GLEAM",
+        "users" : ["user1", "user2", "user3"]
+      },
+      {
+        "name" : "MOBS",
+        "model" : "MODEL_A",
+        "users" : ["userA", "userB"]
+      }
+    ]
+  }
+}
