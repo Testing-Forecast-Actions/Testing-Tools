@@ -1,12 +1,13 @@
 {
-	"teams": {
-		"ISI": {
+	"teams": [{
+			"name": "ISI",
 			"model": ["GLEAM", "AutoArima"],
 			"users": ["gioco", "M-7th", "PMi74"]
 		},
-		"MOBS": {
+		{
+			"name": "MOBS",
 			"model": ["MODEL_A"],
 			"users": ["userA", "userB"]
 		}
-	}
+	]
 }
