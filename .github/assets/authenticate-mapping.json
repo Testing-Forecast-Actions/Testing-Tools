@@ -1,16 +1,12 @@
 {
-  "mapping" : {
-    "teams" : [
-      {
-        "name" : "ISI",
-        "model" : ["GLEAM", "AutoArima"]
-        "users" : ["gioco", "M-7th", "PMi74"]
-      },
-      {
-        "name" : "MOBS",
-        "model" : "MODEL_A",
-        "users" : ["userA", "userB"]
-      }
-    ]
-  }
+	"teams": {
+		"ISI": {
+			"model": ["GLEAM", "AutoArima"],
+			"users": ["gioco", "M-7th", "PMi74"]
+		},
+		"MOBS": {
+			"model": ["MODEL_A"],
+			"users": ["userA", "userB"]
+		}
+	}
 }
