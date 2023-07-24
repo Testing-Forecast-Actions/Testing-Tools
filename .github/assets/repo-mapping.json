@@ -3,8 +3,8 @@
     "teams" : [
       {
         "name" : "ISI",
-        "model" : "GLEAM",
-        "users" : ["user1", "user2", "user3"]
+        "model" : ["GLEAM", "AutoArima"]
+        "users" : ["gioco", "M-7th", "PMi74"]
       },
       {
         "name" : "MOBS",
