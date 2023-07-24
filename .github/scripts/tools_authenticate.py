@@ -20,18 +20,43 @@ class Authenticator () :
         self.changes = changes
         self.mappings = _defaultMappings()
 
+        self.team = None
+        self.models = None
 
-    def authenticate ():
+
+    #
+    #
+    def verifyPaths (self):
+        
+        for changedFile in self.changes
+    
+    # 
+    #
+    def authenticateUser (self):
         j_in = None
         
         # load mappings file
         with open(jsonInputFile) as f_json_input:
             j_in = json.load(f_json_input)
             
-        if j_in == None :
+        if j_in is None :
             print("### Failed to open input file")
-        
-        
+            return false
+
+        # loop over teams to find current user
+        teams = j_in['teams']
+
+        for team in teams:
+            if self.user in team['users']:
+                #found
+                self.team = team['name']
+                self.models = team['models']
+                return true
+
+        # nothing found 
+        return false
+
+
     
     def _defaultMappings (self):
         return os.path.join(os.path.dirname(__file__), '..', default_mapping_folder, default_mapping_file)
@@ -57,19 +82,8 @@ def run (jsonInputFile):
     print ("### Changed List: {}".format(changes))
 
     authenticateObj = Authenticator(actor, changes)
+    authenticateObj.authenticateUser()
     
-
-    # with open(jsonInputFile) as f_json_input:
-    #     j_in = json.load(f_json_input)
-    #     if j_in == None :
-    #         print("### Failed to open input file")
-    #     else :
-    #         print("### Input file opened: {}".format(j_in))
-
-    #     teams = j_in['mapping']['teams']
-
-    #     for team in teams:
-    #         print ("### Team content: {}".format(team))
 
 
 
