@@ -2,57 +2,79 @@ import os
 import json
 import sys
 
-
 #
-def getInputFromOutput():
-    env_file = os.getenv('GITHUB_OUTPUT')
+# Receives as an input through the env :
+# User: the github user that is requesting changes
+# Files: the list of changed files 
+# Mapping file: the file to match against to verify user, team and path. If none, default is used 
 
-    local_var = os.getenv("local_test_var")
-    actor_from_steps = os.getenv("calling_actor")
-    changed_list = os.getenv("changed_files")
+# matching file configuration
+default_mapping_folder = 'assests'
+default_mapping_file = 'authenticate-mapping.json'
 
-    print ("### LOCAL VAR: {}".format(local_var))
-    print ("### Actor: {}".format(actor_from_steps))
-    print ("### Changed List: {}".format(changed_list))
+# class authenticator 
+class Authenticator () :
+
+    def __init__(self, user, changes):
+        self.user = user
+        self.changes = changes
+        self.mappings = _defaultMappings()
+
+
+    def authenticate ():
+        j_in = None
+        
+        # load mappings file
+        with open(jsonInputFile) as f_json_input:
+            j_in = json.load(f_json_input)
+            
+        if j_in == None :
+            print("### Failed to open input file")
+        
+        
     
-    with open (env_file, 'r') as gh_env_file:
-        print ("### OUTPUT content read START>>>>>>>>>> ")
-        print (gh_env_file.read())
-        print ("### OUTPUT content read STOP >>>>>>>>>> ")
+    def _defaultMappings (self):
+        return os.path.join(os.path.dirname(__file__), '..', default_mapping_folder, default_mapping_file)
+
+
+
+
     
+
 
 
 #
 def run (jsonInputFile):
+    
+    actor = os.getenv("calling_actor")
+    changes = os.getenv("changed_files")
 
-    getInputFromOutput()
+    if actor is None or changes is None:
+        return false
+    
+    # debug only, to be removed
+    print ("### Actor: {}".format(actor))
+    print ("### Changed List: {}".format(changes))
 
-    with open(jsonInputFile) as f_json_input:
-        j_in = json.load(f_json_input)
-        if j_in == None :
-            print("### Failed to open input file")
-        else :
-            print("### Input file opened: {}".format(j_in))
+    authenticateObj = Authenticator(actor, changes)
+    
 
-        teams = j_in['mapping']['teams']
+    # with open(jsonInputFile) as f_json_input:
+    #     j_in = json.load(f_json_input)
+    #     if j_in == None :
+    #         print("### Failed to open input file")
+    #     else :
+    #         print("### Input file opened: {}".format(j_in))
 
-        for team in teams:
-            print ("### Team content: {}".format(team))
+    #     teams = j_in['mapping']['teams']
+
+    #     for team in teams:
+    #         print ("### Team content: {}".format(team))
 
 
 
 if __name__ == "__main__":
-    print ("### Testing tools_verify script")
-
-    # if len(sys.argv) <= 1 :
-    #   print ("Missing input. Abort!")
-    #   exit(0)
-
-    # input_data_json = sys.argv[1]
-    # print ("Input data: \n {}".format(input_data_json))
-
-    runningPath = os.path.dirname(__file__)
-    jsonInputFile = os.path.join(runningPath, '..', 'assets', 'authenticate-mapping.json')
-
-    print ("### Running path: {0}, file: {1}".format(runningPath, jsonInputFile))
-    run(jsonInputFile)
+    print ("### Testing tools_authenticate script")
+    passed = run()
+    
+    return passed
