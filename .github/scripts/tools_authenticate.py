@@ -28,7 +28,7 @@ class Authenticator () :
     #
     def verifyPaths (self):
         
-        for changedFile in self.changes
+      #  for changedFile in self.changes
     
     # 
     #
