@@ -47,20 +47,8 @@ class Authenticator () :
         matching_list = []
         for model in self.models :
             matching_list.append(os.path.join(config.default_saving_path, self.team + '_' + model))
-
-        invalid_forcast_paths = []
-        for changed_file in self.changes:
-            print ("Changed file : {}".format(changed_file))
-            print ("List: {}".format(matching_list))
-            head = os.path.split(changed_file)[0]
-
-            if not head in matching_list:
-                print("Head not found {}".format(head))
-                invalid_forcast_paths.append(changed_file)
-            else:
-                print("Head found {}".format(head))
         
-        # invalid_forcast_paths = [changed_file for changed_file in self.changes if not os.path.split(changed_file)[0] in matching_list]
+        invalid_forcast_paths = [changed_file for changed_file in self.changes if not os.path.split(changed_file)[0] in matching_list]
         
         if invalid_forcast_paths:
             # handle trying to save an unauthorised path 
