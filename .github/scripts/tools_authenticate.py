@@ -4,7 +4,7 @@ import json
 import sys
 
 # local's
-import auth_config.py as config
+import auth_config as config
 
 #
 # Receives as an input through the env :
