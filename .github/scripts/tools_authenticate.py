@@ -3,17 +3,14 @@ import re
 import json
 import sys
 
+# local's
+import auth_config.py as config
+
 #
 # Receives as an input through the env :
 # User: the github user that is requesting changes
 # Files: the list of changed files 
 # Mapping file: the file to match against to verify user, team and path. If none, default is used 
-
-# matching file configuration
-# TODO DO -> Move to an external config file
-default_saving_path = 'previsioni'
-default_mapping_folder = 'assests'
-default_mapping_file = 'authenticate-mapping.json'
 
 
 # class authenticator 
