@@ -27,8 +27,10 @@ class Authenticator () :
 
     def authenticate (self): 
         # verify user
-        if not self._authenticateUser():
-            # handle invalid user
+        self._authenticateUser()
+
+        if self.team is None
+            # handle invalid user mapping
             return False
         
         if not self._verifyPaths():
@@ -81,7 +83,7 @@ class Authenticator () :
             
         if j_in is None :
             print("### Failed to open input file")
-            return False
+            return
 
         # loop over teams to find current user
         teams = j_in['teams']
@@ -91,10 +93,7 @@ class Authenticator () :
                 #found
                 self.team = team['name']
                 self.models = team['models']
-                return True
 
-        # nothing found 
-        return False
     
     def _defaultMappings (self):
         return os.path.join(os.path.dirname(__file__), '..', config.default_mapping_folder, config.default_mapping_file)
@@ -114,9 +113,9 @@ def run ():
     print ("### Changed List: {}".format(changes))
 
     authenticateObj = Authenticator(actor, changes)
-    authenticateObj.authenticate()
+    
 
-    return True
+    return authenticateObj.authenticate()
     
 
 
