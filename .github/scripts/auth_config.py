@@ -4,5 +4,5 @@
 
 # matching file configuration
 default_saving_path = 'previsioni'
-default_mapping_folder = 'assests'
+default_mapping_folder = 'assets'
 default_mapping_file = 'authenticate-mapping.json'
