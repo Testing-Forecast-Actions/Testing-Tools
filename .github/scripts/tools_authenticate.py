@@ -102,6 +102,8 @@ class Authenticator () :
 #
 def run ():
 
+    env_file = os.getenv('GITHUB_OUTPUT')
+    
     actor = os.getenv("calling_actor")
     changes = os.getenv("changed_files")
 
@@ -113,11 +115,17 @@ def run ():
     print ("### Changed List: {}".format(changes))
 
     authenticateObj = Authenticator(actor, changes)
-    
 
-    return authenticateObj.authenticate()
-    
+    authenticated = authenticateObj.authenticate()
 
+    with open(env_file, "a") as outenv:
+        if authenticated : 
+            outenv.write("authentication=passed")
+        else :
+            outenv.write("authentication=failed")
+        
+    
+    return authenticated
 
 
 if __name__ == "__main__":
