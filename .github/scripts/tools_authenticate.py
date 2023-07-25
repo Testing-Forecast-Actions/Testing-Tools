@@ -44,7 +44,7 @@ class Authenticator () :
 
         matching_list = []
         for model in self.models :
-            matching_list.append(os.path.join(default_saving_path, self.team + '_' + model))
+            matching_list.append(os.path.join(config.default_saving_path, self.team + '_' + model))
 
         invalid_forcast_paths = [changed_file for changed_file in self.changes if not os.path.split(changed_file)[0] in matching_list]
         if invalid_forcast_paths:
@@ -97,7 +97,7 @@ class Authenticator () :
         return False
     
     def _defaultMappings (self):
-        return os.path.join(os.path.dirname(__file__), '..', default_mapping_folder, default_mapping_file)
+        return os.path.join(os.path.dirname(__file__), '..', config.default_mapping_folder, config.default_mapping_file)
 
 
 #
