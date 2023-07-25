@@ -124,3 +124,8 @@ if __name__ == "__main__":
     print ("### Testing tools_authenticate script")
 
     passed = run()
+
+    if passed : 
+        print ("### >>>>>>>>>> PASSED")
+    else:
+        print ('### >>>>>>>>>> FAILED')
