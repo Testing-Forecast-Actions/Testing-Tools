@@ -29,7 +29,7 @@ class Authenticator () :
         # verify user
         self._authenticateUser()
 
-        if self.team is None
+        if self.team is None:
             # handle invalid user mapping
             return False
         
