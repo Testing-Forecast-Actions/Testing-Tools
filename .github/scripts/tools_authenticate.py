@@ -49,7 +49,7 @@ class Authenticator () :
             
         if j_in is None :
             print("### Failed to open input file")
-            return false
+            return False
 
         # loop over teams to find current user
         teams = j_in['teams']
@@ -59,10 +59,10 @@ class Authenticator () :
                 #found
                 self.team = team['name']
                 self.models = team['models']
-                return true
+                return True
 
         # nothing found 
-        return false
+        return False
 
 
     
@@ -83,7 +83,7 @@ def run (jsonInputFile):
     changes = os.getenv("changed_files")
 
     if actor is None or changes is None:
-        return false
+        return False
     
     # debug only, to be removed
     print ("### Actor: {}".format(actor))
