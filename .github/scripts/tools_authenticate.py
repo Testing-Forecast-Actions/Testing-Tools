@@ -1,4 +1,5 @@
 import os
+import re
 import json
 import sys
 
@@ -11,6 +12,7 @@ import sys
 # matching file configuration
 default_mapping_folder = 'assests'
 default_mapping_file = 'authenticate-mapping.json'
+
 
 # class authenticator 
 class Authenticator () :
@@ -27,8 +29,14 @@ class Authenticator () :
     #
     #
     def verifyPaths (self):
+
+        for model in self.models :
+            # Pattern that matches a forecast file added to the data-processed folder.
+            # Test this regex usiing this link: https://regex101.com/r/wmajJA/1
+            forecast_fname_matching = re.compile(r"^previsioni/(.+)/\d\d\d\d-\d\d.csv$")
         
-      #  for changedFile in self.changes
+            invalid_forcast_names = [filename for filename in self.changes if forecast_fname_matching.match(filename) is None]
+
     
     # 
     #
@@ -36,7 +44,7 @@ class Authenticator () :
         j_in = None
         
         # load mappings file
-        with open(jsonInputFile) as f_json_input:
+        with open(self.mappings) as f_json_input:
             j_in = json.load(f_json_input)
             
         if j_in is None :
