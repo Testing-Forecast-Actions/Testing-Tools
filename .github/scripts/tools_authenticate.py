@@ -123,10 +123,11 @@ def run ():
     authenticated = authenticateObj.authenticate()
 
     with open(env_file, "a") as outenv:
-        if authenticated : 
-            outenv.write("authentication=passed")
-        else :
-            outenv.write("authentication=failed")
+        outenv.write ("authentication={authenticated}")
+        # if authenticated : 
+        #     outenv.write("authentication=passed")
+        # else :
+        #     outenv.write("authentication=failed")
         
     
     return authenticated
