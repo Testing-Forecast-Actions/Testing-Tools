@@ -22,8 +22,11 @@ def run ():
         print ("Validating {}".format(elem))
         v.validate_csv_files("influcast_flu_forecast", elem)
 
+    validated = True
+
+    
     with open(env_file, "a") as outenv:
-        outenv.write("authentication=passed")
+        outenv.write ("authentication={}".format(validated))
 
 if __name__ == "__main__":
     print ("### Testing tools_validate script")
