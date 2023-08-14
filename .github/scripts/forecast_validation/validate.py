@@ -13,10 +13,7 @@ def run ():
     env_file = os.getenv('GITHUB_OUTPUT')    
     to_validate = os.getenv("changed_files")
 
-    # test only
-    if not isinstance(to_validate, (list, tuple)):
-        print ("to validate is not a list")
-        to_validate = [to_validate]
+    to_validate = to_validate.split(" ")
 
     for elem in to_validate:
         print ("Validating {}".format(elem))
