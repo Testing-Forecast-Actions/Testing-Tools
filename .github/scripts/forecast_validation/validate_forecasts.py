@@ -14,7 +14,7 @@ with open(reference_file, "r") as file:
 # Main funct
 def validate_csv_files(file_format, csv_file):
 
-    print("validating {csv_file}")
+    print("validating {}".format(csv_file))
   
     assert file_format in format_mapping, f"Unknown file format: {file_format} not found in mapping."
 
@@ -27,7 +27,7 @@ def validate_csv_files(file_format, csv_file):
         reader = csv.reader(in_file)
 
         for rec in reader:
-          print ("validating record {rec} ...")
+          print ("validating record {} ...".format(rec))
 
           if reader.line_num == 1:
               assert rec == file_fields
