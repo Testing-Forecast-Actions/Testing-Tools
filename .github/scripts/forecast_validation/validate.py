@@ -14,11 +14,11 @@ def run ():
     to_validate = os.getenv("changed_files")
 
     # test only
-    if not isinstance(toValidate, (list, tuple)):
+    if not isinstance(to_validate, (list, tuple)):
         print ("to validate is not a list")
-        toValidate = [toValidate]
+        to_validate = [to_validate]
 
-    for elem in toValidate:
+    for elem in to_validate:
         print ("Validating {}".format(elem))
         v.validate_csv_files("influcast_flu_forecast", elem)
 
