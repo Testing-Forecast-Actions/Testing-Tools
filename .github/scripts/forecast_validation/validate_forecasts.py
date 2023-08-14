@@ -27,7 +27,7 @@ def validate_csv_files(file_format, csv_file):
         reader = csv.reader(in_file)
 
         for rec in reader:
-          print (" validating record {rec} ...)
+          print ("validating record {rec} ...")
 
             if reader.line_num == 1:
                 assert rec == file_fields
