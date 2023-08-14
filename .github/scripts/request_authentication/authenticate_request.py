@@ -97,7 +97,7 @@ class Authenticator () :
 
     
     def _defaultMappings (self):
-        return os.path.join(os.path.dirname(__file__), '..', config.default_mapping_folder, config.default_mapping_file)
+        return os.path.join(os.path.dirname(__file__), config.default_mapping_file)
 
 
 #
