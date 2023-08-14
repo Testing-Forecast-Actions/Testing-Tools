@@ -2,7 +2,7 @@ import json
 import csv
 
 # Config
-reference_file = 'validation_format_reference.json'
+reference_file = 'format_reference.json'
 
 from validation_functions import (validate_float, validate_quantile, validate_year, validate_week,
                                   validate_location, validate_horizon, validate_quantile_label)
