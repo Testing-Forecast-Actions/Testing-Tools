@@ -109,6 +109,7 @@ def run ():
     changes = os.getenv("changed_files")
 
     if actor is None or changes is None:
+        print ("Missing input! Abort")
         return False
     
     # debug only, to be removed
