@@ -115,8 +115,7 @@ def run ():
     print ("### Actor: {}".format(actor))
     print ("### Changed List: {}".format(changes))
 
-    if not isinstance(changes, (list, tuple)):
-        changes = [changes]
+    changes = changes.split(" ")
 
     authenticateObj = Authenticator(actor, changes)
 
