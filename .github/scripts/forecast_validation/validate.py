@@ -22,7 +22,7 @@ def run ():
     validated = True
     
     with open(env_file, "a") as outenv:
-        outenv.write ("validation={}".format(authenticated))
+        outenv.write ("validation={}".format(validated))
 
 
 if __name__ == "__main__":
