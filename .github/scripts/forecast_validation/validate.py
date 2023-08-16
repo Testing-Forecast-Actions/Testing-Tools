@@ -20,10 +20,10 @@ def run ():
         v.validate_csv_files("influcast_flu_forecast", elem)
 
     validated = True
-
     
     with open(env_file, "a") as outenv:
-        outenv.write ("authentication={}".format(validated))
+        outenv.write ("validation={}".format(authenticated))
+
 
 if __name__ == "__main__":
     print ("### Testing tools_validate script")
