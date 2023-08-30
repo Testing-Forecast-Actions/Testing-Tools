@@ -34,7 +34,7 @@ class Sender () :
     self.webhook_url = webhook_url
 
 
-  def send (self, payload, signature):
+  def send (self, payload, secret):
     # x-hub-signature-256" in request.headers
 
     r = requests.post(self.webhook_url, json=payload, auth=BodyDigestSignature(secret))
