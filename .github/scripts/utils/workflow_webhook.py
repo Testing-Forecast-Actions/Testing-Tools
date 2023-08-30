@@ -43,8 +43,8 @@ def run ():
   # get env parameters
   env_file = os.getenv('GITHUB_OUTPUT')
     
-  wh_url = os.getenb("webhook_url")
-  wh_secret = os.getenb("webhook_secret")
+  wh_url = os.getenv("webhook_url")
+  wh_secret = os.getenv("webhook_secret")
   custom_json_data = os.getenv("data")
 
   # debug only, to be removed
