@@ -54,7 +54,7 @@ def run ():
   # debug only, to be removed
 
 
-  if actor is None or changes is None or team is None:
+  if wh_url is None or wh_secret is None or custom_json_data is None:
       return False
   
 
