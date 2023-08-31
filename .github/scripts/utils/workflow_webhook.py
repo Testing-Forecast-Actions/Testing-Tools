@@ -39,7 +39,7 @@ class Sender () :
 
     r = requests.post(self.webhook_url, json=payload, auth=BodyDigestSignature(secret))
     print ("Response: {}".format(r))
-    # print(f"Status Code: {r.status_code}, Response: {r.json()}")
+    print(f"Status Code: {r.status_code}, Response: {r.json()}")
 
 
 
@@ -51,7 +51,6 @@ def run ():
     
     wh_url = os.getenv("webhook_url")
     wh_secret = os.getenv("webhook_secret")
-    # wh_secret = "FLU_TEST_SECRET"
     custom_json_data = os.getenv("data")
     
     # debug only, to be removed
