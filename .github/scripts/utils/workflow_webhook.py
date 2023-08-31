@@ -13,8 +13,10 @@ class BodyDigestSignature(object):
         self.secret = secret
         self.header = header
         self.algorithm = algorithm
+        print("Calling constructor - Secret: {}".format(secret))
 
     def __call__(self, request):
+        print("Calling call")
         body = request.body
 
         print ("Body: {}".format(body))
