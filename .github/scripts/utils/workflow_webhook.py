@@ -9,7 +9,7 @@ import hashlib
 
 
 class BodyDigestSignature(object):
-    def __init__(self, secret, header='Sign', algorithm=hashlib.sha256):
+    def __init__(self, secret, header='x-hub-signature-256', algorithm=hashlib.sha256):
         self.secret = secret
         self.header = header
         self.algorithm = algorithm
@@ -40,6 +40,7 @@ class Sender () :
     r = requests.post(self.webhook_url, json=payload, auth=BodyDigestSignature(secret))
     print ("Response: {}".format(r))
     # print(f"Status Code: {r.status_code}, Response: {r.json()}")
+
 
 
 #
