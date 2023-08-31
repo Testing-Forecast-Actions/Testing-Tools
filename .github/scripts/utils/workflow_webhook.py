@@ -37,7 +37,7 @@ class Sender () :
   def send (self, payload, secret):
     r = requests.post(self.webhook_url, json=payload, auth=BodyDigestSignature(secret))
     print ("Response: {}".format(r))
-    print(f"Status Code: {r.status_code}, Response: {r.json()}")
+    # print(f"Status Code: {r.status_code}, Response: {r.json()}")
 
 
 
