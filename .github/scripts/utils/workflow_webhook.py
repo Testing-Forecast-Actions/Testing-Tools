@@ -50,7 +50,8 @@ def run ():
     env_file = os.getenv('GITHUB_OUTPUT')
     
     wh_url = os.getenv("webhook_url")
-    wh_secret = os.getenv("webhook_secret")
+    # wh_secret = os.getenv("webhook_secret")
+    wh_secret = "FLU_TEST_SECRET"
     custom_json_data = os.getenv("data")
     
     # debug only, to be removed
