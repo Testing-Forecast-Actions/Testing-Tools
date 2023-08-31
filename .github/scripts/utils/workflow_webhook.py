@@ -25,7 +25,10 @@ class BodyDigestSignature(object):
             body = body.encode('utf-8')  
 
         signature = hmac.new(self.secret.encode('utf-8'), body, digestmod=self.algorithm)
-        request.headers[self.header] = signature.hexdigest()
+        hex_sig = signature.hexdigest()
+        print (f"GEN SIG {hex_sig}")
+        request.headers[self.header] = hex_sig
+        #request.headers[self.header] = signature.hexdigest()
         return request
 
 
