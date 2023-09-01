@@ -40,7 +40,7 @@ def run ():
     
     with open(env_file, "a") as outenv:
         outenv.write ("validation={}".format(validated))
-        outenv.write ("output_data={}".format(res_data))
+        outenv.write ("output_data={}".format(std(res_data)))
 
 
 if __name__ == "__main__":
