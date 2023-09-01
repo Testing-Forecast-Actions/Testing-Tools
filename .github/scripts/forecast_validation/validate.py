@@ -41,7 +41,7 @@ def run ():
     with open(env_file, "a") as outenv:
         print(f"Writing to out: validate: {validated}, outdata: {str(res_data)}")
         outenv.write ("validation={}".format(validated))
-        outenv.write ("output_data={}".format(str(res_data)))
+        # outenv.write ("output_data={}".format(str(res_data)))
 
 
 if __name__ == "__main__":
