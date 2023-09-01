@@ -30,9 +30,9 @@ def run ():
             res_data['team'] = team_model[0]
 
         if team_model[1] not in res_data['models'] :
-           res_data['models'][team_model[1]] = [change]
+           res_data['models'][team_model[1]] = [elem]
         else:
-           res_data['models'][team_model[1]].append(change)    
+           res_data['models'][team_model[1]].append(elem)    
 
     
     validated = True
