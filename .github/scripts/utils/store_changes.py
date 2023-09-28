@@ -1,5 +1,5 @@
+import os
 import json
-from os import path
 
 
 # Update is executed for one team at a time
