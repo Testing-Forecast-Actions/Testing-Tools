@@ -6,7 +6,7 @@
 		},
 		{
 			"name": "MOBS",
-			"models": ["MODEL_A"],
+			"models": ["ModelA"],
 			"users": ["Chappi74", "userB"]
 		}
 	]
