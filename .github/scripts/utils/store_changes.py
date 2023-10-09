@@ -34,6 +34,23 @@ def update_json_db (json_file_path, new_data):
     team_commits = json_data[team_name]
 
     for change in models_changes:
+      
+      for commit in team_commits :
+        
+        commit_md = commit.get("model")
+        change_md = change.get("model")
+
+        if isinstance (commit_md, (list, dict)):
+          print("Commit is list or dict")
+        elif (isinstance(commit_md, str):
+          print("Commit is string")
+
+        if isinstance (change_md, (list, dict)):
+          print("change_md is list or dict")
+        elif (isinstance(change_md, str):
+          print("change_md is string")
+        
+      
       committed_model = [commit for commit in team_commits if commit.get("model") == change.get("model")]
       if committed_model == [] :
         team_commits.append(change)
