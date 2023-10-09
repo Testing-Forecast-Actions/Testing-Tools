@@ -44,11 +44,15 @@ def update_json_db (json_file_path, new_data):
           print("Commit is list or dict")
         elif (isinstance(commit_md, str):
           print("Commit is string")
+        else:
+          print("Commit is unknown")
 
         if isinstance (change_md, (list, dict)):
           print("change_md is list or dict")
         elif (isinstance(change_md, str):
           print("change_md is string")
+        else:
+          print("change_md is unknown")
         
       
       committed_model = [commit for commit in team_commits if commit.get("model") == change.get("model")]
