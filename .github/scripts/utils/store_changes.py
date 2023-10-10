@@ -42,14 +42,14 @@ def update_json_db (json_file_path, new_data):
 
         if isinstance (commit_md, (list, dict)):
           print("Commit is list or dict")
-        elif (isinstance(commit_md, str):
+        elif isinstance(commit_md, str):
           print("Commit is string")
         else:
           print("Commit is unknown")
 
         if isinstance (change_md, (list, dict)):
           print("change_md is list or dict")
-        elif (isinstance(change_md, str):
+        elif isinstance(change_md, str):
           print("change_md is string")
         else:
           print("change_md is unknown")
