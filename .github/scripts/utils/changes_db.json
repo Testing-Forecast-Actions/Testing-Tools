@@ -22,6 +22,12 @@
                 "previsioni/MOBS_FluABCaster/2017_50.csv",
                 "previsioni/MOBS_FluABCaster/2017_51.csv"
             ]
+        },
+        {
+            "model": "ModelA",
+            "changes": [
+                "previsioni/MOBS_ModelA/2023_07.csv"
+            ]
         }
     ],
     "NE": [

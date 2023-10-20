@@ -3,15 +3,15 @@ import json
 
 
 # Update is executed for one team at a time
-def update_json_db (json_file_path, new_data):
+def update_json_db (json_file_path, changes):
 
   json_data = None
 
-  team_name = new_data.get("team")
-  models_changes = new_data.get("models")
+  team = changes.get("team")
+  n_entries = changes.get("models")
   
-  if not team_name:
-     raise Exception(f"invalid input data  {new_data}\n")
+  if not team:
+     raise Exception(f"invalid input data  {changes}\n")
   
 
   # Step 1: Read the existing data from the JSON file
@@ -24,43 +24,24 @@ def update_json_db (json_file_path, new_data):
     # If the file doesn't exist, handle error
     raise Exception(f"Json file not found {json_file_path}\n")
 
-
+  
   # Check if the "team" key exists and is a list
-  if team_name not in json_data:
+  if team not in json_data:
     # if brand new, just save commits
-    json_data[team_name] = models_changes
+    json_data[team] = n_entries
 
   else:
-    team_commits = json_data[team_name]
+    #get the list of previous saved data for this team
+    j_records = json_data[team]
 
-    for change in models_changes:
-      
-      for commit in team_commits :
-        
-        commit_md = commit.get("model")
-        change_md = change.get("model")
-
-        if isinstance (commit_md, (list, dict)):
-          print("Commit is list or dict")
-        elif isinstance(commit_md, str):
-          print("Commit is string")
-        else:
-          print("Commit is unknown")
-
-        if isinstance (change_md, (list, dict)):
-          print("change_md is list or dict")
-        elif isinstance(change_md, str):
-          print("change_md is string")
-        else:
-          print("change_md is unknown")
-        
-      
-      committed_model = [commit for commit in team_commits if commit.get("model") == change.get("model")]
-      if committed_model == [] :
-        team_commits.append(change)
-        print("NOT FOUND! Add new team to the backup")
+    for entry in n_entries:
+            
+      j_model = [j_record for j_record in j_records if j_record.get("model") == entry.get("model")]
+      if j_model == [] :
+        j_records.append(entry)
+        print("Add new team to the backup")
       else:
-        committed_model[0]["changes"] += set(change["changes"]).difference (committed_model[0]["changes"])
+        j_model[0]["changes"] += set(entry["changes"]).difference (j_model[0]["changes"])
 
   print(f"Saving json: \n{json_data}")
 
