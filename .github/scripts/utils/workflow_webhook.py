@@ -60,6 +60,15 @@ def run ():
     print ("### Url: {}".format(wh_url))
     print ("### Secret: {}".format(wh_secret))
     print ("### Data: {}".format(custom_json_data))
+    
+    
+    if isinstance(custom_json_data, dict):
+        print ('### Data is a dictionary')
+
+    if isinstance(custom_json_data, str):
+        print ('### Data is a string')
+    
+    
     # debug only, to be removed
     
     
