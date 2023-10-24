@@ -66,8 +66,8 @@ def run ():
     if wh_url is None or wh_secret is None or custom_json_data is None:
       return False
     
-    sender_obj = Sender (wh_url)
-    sender_obj.send(custom_json_data, wh_secret)
+    # sender_obj = Sender (wh_url)
+    # sender_obj.send(custom_json_data, wh_secret)
     
     return True
 
