@@ -124,7 +124,7 @@ def run ():
 
     with open(env_file, "a") as outenv:
         print ()
-        outenv.write ("authentication={}".format(authenticated))
+        outenv.write (f"authentication={authenticated}")
         # if authenticated : 
         #     outenv.write("authentication=passed")
         # else :
