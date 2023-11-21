@@ -139,7 +139,5 @@ if __name__ == "__main__":
 
     passed = run()
 
-    if passed : 
-        print ("### >>>>>>>>>> PASSED")
-    else:
-        print ('### >>>>>>>>>> FAILED')
+    if not passed : 
+      sys.exit(1)
