@@ -7,10 +7,17 @@ import sys
 import validate_forecasts as v
 
 
+def outputResults (result = True, result_msg = "" ):
+    env_file = os.getenv('GITHUB_OUTPUT')    
+    out_res = "success" if result else "failure"
+
+    with open(env_file, "a") as outenv:
+        print (f"Writing results to output")
+        outenv.write (f"validate={out_res}")
+        outenv.write (f"message={result_msg}")
+
+
 def run ():
-
-    validated = True
-
 
     env_file = os.getenv('GITHUB_OUTPUT')    
     to_validate = os.getenv("changed_files")
@@ -19,23 +26,16 @@ def run ():
 
     for elem in to_validate:
         print ("Validating {}".format(elem))
+
         try:
             v.validate_csv_files("influcast_flu_forecast", elem)
-        except:
-            validated = False
-            break
-    
-    
-    
-    with open(env_file, "a") as outenv:
-        print(f"Writing to out: validate: {validated}")
-        outenv.write (f"validation={validated}")
+            outputResults()
 
-    return validated
+        except Exception as e:
+            outputResults(False, str(e))
+            break    
+    
 
 if __name__ == "__main__":
     print ("### Testing tools_validate script")
-
-    valid_run = run()
-    if not valid_run:
-        sys.exit(1)
+    run()
