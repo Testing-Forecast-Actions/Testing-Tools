@@ -100,7 +100,7 @@ def outputResults (result = True, result_msg = "" ):
 
     with open(env_file, "a") as outenv:
         print (f"Writing results to output auth: {out_res}, msg: {result_msg}")
-        outenv.write (f"authenticate={out_res}")
+        outenv.write (f"authenticate={out_res}\n")
         outenv.write (f"message={result_msg}")
 
 #
