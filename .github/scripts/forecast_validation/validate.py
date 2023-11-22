@@ -12,7 +12,7 @@ def outputResults (result = True, result_msg = "" ):
     out_res = "success" if result else "failure"
 
     with open(env_file, "a") as outenv:
-        print (f"Writing results to output")
+        print (f"Writing results to output. Validate: {out_res}, msg: {result_msg}")
         outenv.write (f"validate={out_res}")
         outenv.write (f"message={result_msg}")
 
