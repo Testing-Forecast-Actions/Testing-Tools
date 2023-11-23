@@ -24,7 +24,7 @@ def storeForecasts (forecasts):
             model_entry["changes"].append(forecast)
 
     if out_data['models']:
-        db_path = os.path.join(os.getcwd(), "./repo/.github/data-storage/changes_db.json")
+        db_path = os.path.join(os.getcwd(), "repo/.github/data-storage/changes_db.json")
         print(f"DB path: {db_path}")
         updateForecastsJson(db_path, out_data)
     
