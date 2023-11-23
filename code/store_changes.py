@@ -3,8 +3,8 @@ import json
 
 
 def storeForecasts (forecasts):
-
-    team = os.path.basename(os.path.split(forecasts[0])[0]).split('-')[0]
+           
+    team = os.path.basename(os.path.split(forecasts[0])[0]).split('_')[0]
     if not team:
      raise Exception(f"invalid input data  {forecasts}\n")
 
@@ -15,16 +15,15 @@ def storeForecasts (forecasts):
     for forecast in forecasts:
 
         #get the model name from path
-        model = tuple(os.path.basename(os.path.split(forecast)[0]).split('-'))[1]
+        model = tuple(os.path.basename(os.path.split(forecast)[0]).split('_'))[1]
 
         model_entry = next((item for item in out_data['models'] if item["model"] == model), None)
         if model_entry is None:
-            out_data['models'].append({"model" : model, "changes": [forecast]})
+            out_data['models'].append({"model" : model, "changes": [forecast]})            
         else:
             model_entry["changes"].append(forecast)
 
     if out_data['models']:
-        # "/home/runner/work/the-hub/the-hub/./repo/.github/data-storage/changes_db.json"
         db_path = os.path.join(os.getcwd(), "./repo/.github/data-storage/changes_db.json")
         print(f"DB path: {db_path}")
         updateForecastsJson(db_path, out_data)
@@ -113,7 +112,6 @@ def store(to_store):
     
 
     model_changes = []
-    metadata_changes = []
     targetdata_changes = []
     
     # 
@@ -125,12 +123,9 @@ def store(to_store):
 
         # needed for different deepness of paths
         rootFolder = dirname if dirname != '' else path_split[0]
-        if rootFolder == "model-output":
+        if rootFolder == "previsioni":
             # save model output
             model_changes.append(fchanged)
-        elif rootFolder == "model-metadata":
-            # save meta-data
-            metadata_changes.append(fchanged)
         elif rootFolder == "target-data":
             # save target-data
             targetdata_changes.append(fchanged)
@@ -143,11 +138,6 @@ def store(to_store):
         print (f"{len(model_changes)} changes in model-output")
         storeForecasts(model_changes)
 
-    if metadata_changes:
-        print (f"{len(metadata_changes)} changes in model-metadata")
-        # storetMetaData(metadata_changes)
-        storeStdData(metadata_changes, "metadata_db.json")
-
     if targetdata_changes:
         print (f"{len(targetdata_changes)} changes in targetdata")
         storeStdData(targetdata_changes, "target_db.json")
@@ -156,8 +146,10 @@ def store(to_store):
 
 if __name__ == "__main__":
 
-    store_data = os.getenv("data")        
-    jchanges = json.loads(store_data)
+    # store_data = os.getenv("data")        
+    # jchanges = json.loads(store_data)
+
+    jchanges = {'pr-changes': 'previsioni/ISI_AutoArima/2017_51.csv'}
 
     print (f"Changes: {jchanges}")
     
