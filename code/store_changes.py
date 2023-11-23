@@ -153,7 +153,8 @@ if __name__ == "__main__":
 
     print (f"Path {os.getcwd()}")
     print (f"Subs {os.listdir()}")
-    print (f"store: {os.listdir(os.path.join(os.getcwd(), "repo/.github/data-storage"))}")
+           
+    print (f"store: {os.listdir( os.path.join(os.getcwd(),'repo/.github/data-storage') )}")
            
     print (f"Changes: {jchanges}")
     
