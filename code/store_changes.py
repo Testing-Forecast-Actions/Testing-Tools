@@ -152,6 +152,8 @@ if __name__ == "__main__":
     jchanges = {'pr-changes': 'previsioni/ISI_AutoArima/2017_51.csv'}
 
     print (f"Path {os.getcwd()}")
+    print (f"Subs { os.listdir( os.path.join( os.getcwd(),'repo'))}")    
+    print (f"Subs { os.listdir( os.path.join( os.getcwd(),'repo/.github'))}")
     print (f"Subs { os.listdir( os.path.join( os.getcwd(),'repo/.github/data-storage'))}")
            
     # print (f"store: {os.listdir( os.path.join(os.getcwd(),'repo/.github/data-storage') )}")
