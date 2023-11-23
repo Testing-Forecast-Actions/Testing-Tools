@@ -158,5 +158,7 @@ if __name__ == "__main__":
 
     store_data = os.getenv("data")        
     jchanges = json.loads(store_data)
+
+    print (f"Changes: {jchanges}")
     
     store(jchanges["pr-changes"])
