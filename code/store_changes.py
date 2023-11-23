@@ -146,18 +146,8 @@ def store(to_store):
 
 if __name__ == "__main__":
 
-    # store_data = os.getenv("data")        
-    # jchanges = json.loads(store_data)
-
-    jchanges = {'pr-changes': 'previsioni/ISI_AutoArima/2017_51.csv'}
-
-    print (f"Path {os.getcwd()}")
-    print (f"Subs { os.listdir( os.path.join( os.getcwd(),'repo'))}")    
-    print (f"Subs { os.listdir( os.path.join( os.getcwd(),'repo/.github'))}")
-    print (f"Subs { os.listdir( os.path.join( os.getcwd(),'repo/.github/data-storage'))}")
-           
-    # print (f"store: {os.listdir( os.path.join(os.getcwd(),'repo/.github/data-storage') )}")
-           
+    store_data = os.getenv("data")        
+    jchanges = json.loads(store_data)           
     print (f"Changes: {jchanges}")
     
     store(jchanges["pr-changes"])
