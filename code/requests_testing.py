@@ -10,7 +10,7 @@ url = 'https://djgleam.isi.it/sleepy/' + t_out + '/'
 print(f"calling url: {url}")
 
 try:
-  response = requests.get(url, timeout=600)
+  response = requests.get(url, timeout=330)
   
   print("Response headers:", response.headers)
   print(response.json())
