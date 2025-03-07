@@ -3,7 +3,8 @@ import os
 
 t_out = os.getenv("time_out")
 rt_out = os.getenv("r_time_out")
-r_time_out
+
+
 print ("Python Requests - Code test start")
 
 url = 'https://djgleam.isi.it/sleepy/' + rt_out + '/'
