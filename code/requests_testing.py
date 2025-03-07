@@ -11,13 +11,13 @@ url = 'https://djgleam.isi.it/sleepy/' + rt_out + '/'
 
 print(f"calling url: {url} with timeout: {t_out}")
 
-try:
+# try:
   response = requests.get(url, timeout=t_out)
   
   print("Response headers:", response.headers)
   print(response.json())
 
-except requests.exceptions.RequestException as e:
-    print("Errore nella richiesta:", e)
+# except requests.exceptions.RequestException as e:
+    # print("Errore nella richiesta:", e)
 
 print("Python Requests - Code test completed")
