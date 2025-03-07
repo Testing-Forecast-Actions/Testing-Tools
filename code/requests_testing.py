@@ -1,15 +1,15 @@
-# import requests
-import urllib3
+import requests
 
 print ("Python Requests - Code test start")
+
 url = 'https://djgleam.isi.it/sleepy/400/'
+try:
+  response = requests.get(url, timeout=600)
+  
+  print("Response headers:", response.headers)
+  print(response.json())
 
-resp = urllib3.request("GET", "https://djgleam.isi.it/sleepy/400/")
-# print (f"resp status: {resp.status}\nresp data: {resp.data}")
+except requests.exceptions.RequestException as e:
+    print("Errore nella richiesta:", e)
 
-# test_session = requests.Session()
-# test_session.headers.update({ "Connection":"keep-alive" })
-# x = test_session.get(url, timeout=500)
-# # x = requests.get(url)
-
-# print("Python Requests - Code test completed")
+print("Python Requests - Code test completed")
