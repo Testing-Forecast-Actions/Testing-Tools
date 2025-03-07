@@ -1,8 +1,14 @@
 import requests
+import os
+
+t_out = os.getenv("time_out")
 
 print ("Python Requests - Code test start")
 
-url = 'https://djgleam.isi.it/sleepy/400/'
+url = 'https://djgleam.isi.it/sleepy/' + t_out + '/'
+
+print(f"calling url: {url}")
+
 try:
   response = requests.get(url, timeout=600)
   
