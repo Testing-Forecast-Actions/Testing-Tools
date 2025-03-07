@@ -1,7 +1,7 @@
 import requests
 import os
 
-t_out = os.getenv("time_out")
+t_out = int(os.getenv("time_out"))
 rt_out = os.getenv("r_time_out")
 
 
