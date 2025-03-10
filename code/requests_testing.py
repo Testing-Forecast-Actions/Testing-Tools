@@ -8,7 +8,7 @@ rt_out = os.getenv("r_time_out")
 print ("Python Requests - Code test start")
 
 # url = 'https://djgleam.isi.it/sleepy/' + rt_out + '/'
-url = 'http://chimera.isi.it:5000/test'
+url = 'http://chimera.isi.it:8000/test'
 data = {"delay": rt_out}
 
 print(f"calling url: {url} with timeout: {t_out}")
