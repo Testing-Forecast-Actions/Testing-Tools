@@ -9,7 +9,7 @@ print ("Python Requests - Code test start")
 
 # url = 'https://djgleam.isi.it/sleepy/' + rt_out + '/'
 url = 'http://chimera.isi.it:8000/test'
-data = {"delay": rt_out}
+data = {"delay": int(rt_out)}
 
 print(f"calling url: {url} with timeout: {t_out}")
 
