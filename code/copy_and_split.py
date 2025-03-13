@@ -31,6 +31,9 @@ def copy_and_split_csv(file_path, temp_dir, max_records=25000):
             writer.writerow(header)
             writer.writerows(rows[i * max_records: (i + 1) * max_records])
         part_files.append(part_file_path)
+
+    # remove original file once split is completed 
+    os.remove(temp_file_path)
     
     return part_files
 
@@ -97,7 +100,6 @@ def main (hub_path, tmp_dir, json_data):
         update_json_changes(parts_list, filename= jdb)
 
         
-
 if __name__ == "__main__":
   
     # Arguments 
