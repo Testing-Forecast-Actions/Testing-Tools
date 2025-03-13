@@ -141,8 +141,8 @@ def post_files(changes, whurl, whsecret, disease_name):
       
         jpayload["changes"] = [change]
         sender_obj = Sender (whurl)
-        response = sender_obj.send(json.dumps(jpayload), whsecret)
-        # response = response_gen()
+        # response = sender_obj.send(json.dumps(jpayload), whsecret)
+        response = response_gen()
 
         if not response.headers["content-type"].strip().startswith("application/json"):
             return handleServerError()
