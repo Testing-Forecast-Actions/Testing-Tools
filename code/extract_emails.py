@@ -26,6 +26,8 @@ def extract_emails_from_yml(folder_path, excluded_files):
 
 if __name__ == "__main__":
 
+    env_file = os.getenv('GITHUB_OUTPUT')
+    
     parser = argparse.ArgumentParser()
     parser.add_argument('--folder_path')
     parser.add_argument('--exclusions', default='')
@@ -42,3 +44,7 @@ if __name__ == "__main__":
     print("\n\nExtracted: \n".join(emails))
 
     print(f"\nTotale email uniche trovate: {len(emails)}")
+
+    with open(env_file, "a") as outenv:
+        outenv.write (f"email_list={.join(emails)}")
+        
