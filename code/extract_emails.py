@@ -28,7 +28,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--folder_path')
-    parser.add_argument('--exclusions')
+    parser.add_argument('--exclusions', default='')
 
     args = parser.parse_args()
 
