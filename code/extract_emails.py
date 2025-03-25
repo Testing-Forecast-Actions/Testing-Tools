@@ -46,5 +46,5 @@ if __name__ == "__main__":
     print(f"\nTotale email uniche trovate: {len(emails)}")
 
     with open(env_file, "a") as outenv:
-        outenv.write (f"email_list={join(emails)}")
+        outenv.write (f"email_list={','.join(emails)}")
         
