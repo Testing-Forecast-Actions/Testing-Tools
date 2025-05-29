@@ -15,3 +15,6 @@ def max_model_count_from_file(file_path):
     return max_models
 
 
+# Esempio d'uso:
+file_path = "Ensemble-members.json"
+print("Numero massimo di modelli:", max_model_count_from_file(file_path))
