@@ -6,6 +6,9 @@ import os
 # file_path = "Ensemble-members.json"
 # print("Numero massimo di modelli:", max_model_count_from_file(file_path))
 
+def suitable_for_ensemble ():
+    return true if max_model_count () >= 3 : false
+
 def max_model_count_from_file(file_path):
     with open(file_path, 'r', encoding='utf-8') as f:
         data = json.load(f)
