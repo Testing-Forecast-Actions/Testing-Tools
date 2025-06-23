@@ -1,6 +1,28 @@
+import os
+import csv
 import json
 import yaml
-import os
+
+def get_latest_origin_dates(filepath):
+    """
+    Estrae gli origin_date dei record in cui is_latest è True dal file CSV specificato.
+    """
+    origin_dates = set()
+
+    with open(filepath, newline='', encoding='utf-8') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            if row.get("is_latest", "").strip().lower() == "true":
+                origin_dates.add(row.get("origin_date"))
+
+    return list(origin_dates)
+
+# Esempio d'uso
+file_path = "forecasting_weeks.csv"
+latest_dates = get_latest_origin_dates(file_path)
+print("Origin date(s) con is_latest = true:", latest_dates)
+
+# -------
 
 # Using example:
 # file_path = "Ensemble-members.json"
