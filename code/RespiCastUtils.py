@@ -2,6 +2,10 @@ import os
 import csv
 import json
 import yaml
+<<<<<<< HEAD
+import os
+import csv
+=======
 
 def get_latest_origin_dates(filepath):
     """
@@ -23,20 +27,40 @@ latest_dates = get_latest_origin_dates(file_path)
 print("Origin date(s) con is_latest = true:", latest_dates)
 
 # -------
+>>>>>>> refs/remotes/origin/main
 
 # Using example:
 # file_path = "Ensemble-members.json"
 # print("Numero massimo di modelli:", max_model_count_from_file(file_path))
 
-def suitable_for_ensemble ():
-    return true if max_model_count () >= 3 : false
+def suitable_for_models (repo_path):
+    db_path = repo_path + '.github/data-storage/changes_db.json'
+    metadata_folder =  repo_path + 'model-metadata/'
+
+    changes = load_changes_db(db_path)
+    return True if count_submitted_models(changes, metadata_folder) >= 3 else False
+
+
+def suitable_for_ensemble (repo_path):
+
+    filename = f"{get_latest_origin_dates(repo_path)}-respicast-hubEnsemble-ensemble_models.json"
+
+    file_path = os.path.join(repo_path, f".github/logs/{filename}")
+    return True if max_model_count_from_file(file_path) >= 3 else False
+
+
 
 def max_model_count_from_file(file_path):
-    with open(file_path, 'r', encoding='utf-8') as f:
-        data = json.load(f)
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+    except FileNotFoundError:
+        print(f"File not found: {file_path}")
+        return 0
 
     max_models = 0
 
+    
     for target in data:
         for country in target.get("countries", []):
             for member in country.get("members", []):
@@ -45,6 +69,21 @@ def max_model_count_from_file(file_path):
 
     return max_models
 
+
+def get_latest_origin_dates(repo_path):
+    """ 
+    Estrae gli origin_date dei record in cui is_latest è True dal file CSV specificato. 
+    """ 
+    filepath = os.path.join(repo_path, 'supporting-files/forecasting_weeks.csv')
+    origin_dates = set() 
+
+    with open(filepath, newline='', encoding='utf-8') as csvfile: 
+        reader = csv.DictReader(csvfile) 
+        for row in reader: 
+            if row.get("is_latest", "").strip().lower() == "true": 
+                origin_dates.add(row.get("origin_date")) 
+
+    return list(origin_dates)[0] 
 
 
 # Using example
@@ -94,9 +133,17 @@ def count_submitted_models(changes_db, metadata_folder):
             try:
                 designation = get_team_model_metadata(team, model_name, metadata_folder)
                 if designation in {"primary", "secondary"}:
+                    print (f"Model name: {model_name} is primary or secondary")
                     submitted_models_count += 1
+                else:
+                    print (f"Model name: {model_name} is not primary or secondary")
             except FileNotFoundError as e:
                 print(f"[AVVISO] {e}")
                 continue  # Se manca il file, prosegue con gli altri
 
     return submitted_models_count
+
+
+if __name__ == "__main__":
+    print ('RespiCastUtils')
+
