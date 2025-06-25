@@ -1,15 +1,17 @@
-import json
-import yaml
 import os
 import csv
+import json
+import yaml
+import argparse 
 
 # Using example:
 # file_path = "Ensemble-members.json"
 # print("Numero massimo di modelli:", max_model_count_from_file(file_path))
 
 def suitable_for_models (repo_path):
-    db_path = repo_path + '.github/data-storage/changes_db.json'
-    metadata_folder =  repo_path + 'model-metadata/'
+    db_path = os.path.join(repo_path, '.github/data-storage/changes_db.json')
+
+    metadata_folder =  os.path.join(repo_path, 'model-metadata/')
 
     changes = load_changes_db(db_path)
     return True if count_submitted_models(changes, metadata_folder) >= 3 else False
@@ -121,4 +123,17 @@ def count_submitted_models(changes_db, metadata_folder):
 if __name__ == "__main__":
     print ('RespiCastUtils')
 
+    # Arguments 
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--hub_path', default="./repo")
     
+    args = parser.parse_args()
+
+    hub_path = str(args.hub_path)
+
+    if suitable_for_models(hub_path) or suitable_for_ensemble(hub_path):
+        print ("sutiable")
+        exit(0)
+
+    print ("not suitable")
+    exit(1)
