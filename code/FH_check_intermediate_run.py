@@ -4,6 +4,9 @@ import json
 import yaml
 import argparse 
 
+from FH_utils import get_latest_origin_dates
+
+
 # Using example:
 # file_path = "Ensemble-members.json"
 # print("Numero massimo di modelli:", max_model_count_from_file(file_path))
@@ -45,21 +48,6 @@ def max_model_count_from_file(file_path):
 
     return max_models
 
-
-def get_latest_origin_dates(repo_path):
-    """ 
-    Estrae gli origin_date dei record in cui is_latest è True dal file CSV specificato. 
-    """ 
-    filepath = os.path.join(repo_path, 'supporting-files/forecasting_weeks.csv')
-    origin_dates = set() 
-
-    with open(filepath, newline='', encoding='utf-8') as csvfile: 
-        reader = csv.DictReader(csvfile) 
-        for row in reader: 
-            if row.get("is_latest", "").strip().lower() == "true": 
-                origin_dates.add(row.get("origin_date")) 
-
-    return list(origin_dates)[0] 
 
 
 # Using example
