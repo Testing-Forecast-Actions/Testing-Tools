@@ -30,4 +30,4 @@ if __name__ == "__main__":
 
     with open(env_file, "a") as outenv:
         print (f"Writing results to output: {out_res}")
-        outenv.write (f"baseline_exists={out_res}\n")
+        outenv.write (f"bl_exists={out_res}\n")
