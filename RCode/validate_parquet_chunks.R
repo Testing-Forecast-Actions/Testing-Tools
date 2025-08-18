@@ -29,19 +29,27 @@ rows_per_chunk <- opt$rows
 output_dir <- opt$out
 logfile <- opt$log
 
-dir.create(output_dir, showWarnings = FALSE)
+cat("📁 Creating backup dir:", output_dir, "\n")
+cat("📁 Input file:", parquet_path, "\n")
+cat("📁 Input hubpath:", hub_path, "\n")
+
+
+dir.create(output_dir, showWarnings = TRUE)
+
 if (file.exists(logfile)) file.remove(logfile)
 
-  log_error <- function(message) {
+log_error <- function(message) {
   cat(message, "\n", file = logfile, append = TRUE)
 }
-
 
 
 # === BACKUP ORIGINAL FILE ===
 input_src_absolute = file.path(hub_path, "model-output", parquet_path)
 src_file_name <- basename(input_src_absolute)
 src_full_path <- normalizePath(input_src_absolute)
+
+cat("📁 Backup file name:", src_file_name, "\n")
+
 backup_path <- file.path(output_dir, paste0("backup_", src_file_name))
 
 cat("📁 Backup del file sorgente in:", backup_path, "\n")
