@@ -1,23 +1,86 @@
-# main orchestrator file for custom validations
+#!/usr/bin/env Rscript
+
+suppressPackageStartupMessages({
+  library(optparse)
+  library(hubValidations)
+})
+
+# --- Function to classify PR changes 
+classify_changed_files <- function(files) {
+  files <- files[files != ""]
+
+  model_files <- files[grepl("^forecast-models/.*\\.parquet$", files)]
+  metadata_files <- files[grepl("^model-metadata/.*\\.ya?ml$", files)]
+  invalid_files <- setdiff(files, c(model_files, metadata_files))
+
+  list(
+    model_files = model_files,
+    metadata_files = metadata_files,
+    invalid_files = invalid_files
+  )
+}
+
+# -- Extract team_id from path model-output/team-model/file.parquet
+extract_team_id <- function(file_path) {
+  parts <- strsplit(file_path, "/")[[1]]
+  idx <- which(parts == "forecast-models")
+  parts[idx + 1]
+}
+
 main <- function() {
-  opt <- parse_args()  # usa optparse
+  option_list <- list(
+    make_option("--hub_path", type = "character", help = "Root path for the repo hub"),
+    make_option("--all_changed_files", type = "character", help = "Comma separated list of all the changes in the PR"),
+    make_option("--check_submit_window", type = "logical", default = TRUE, help = "Check submission window")
+  )
 
-  # 1. Check config hub (una volta)
-  check_hub_config(opt$hub_path)
+  opt <- parse_args(OptionParser(option_list = option_list))
+  changed_files <- unlist(strsplit(opt$all_changed_files, ","))
 
-  # 2. Check finestra di submission (una volta, opzionale)
-  if (opt$check_submit_window) {
-    check_submission_window(opt$hub_path)
+  message("=== Starting PR custom validations ===")
+
+  # 1. Check hub configuration
+  cfg_check <- hubValidations::new_hub_validations()
+  cfg_check$valid_config <- hubValidations::try_check(
+    hubValidations::check_config_hub_valid(opt$hub_path),
+    file_path = NULL
+  )
+  
+  if (hubValidations::not_pass(cfg_check$valid_config)) {
+    hubValidations::print_validations(cfg_check)
+    stop("❌ Invalid hub configuration detected")
   }
 
-  # 3. Prepara liste file
-  model_files <- unlist(strsplit(opt$model_output_files, ","))
-  metadata_files <- unlist(strsplit(opt$metadata_files, ","))
+  # 2. Check for submission window
+  if (opt$check_submit_window) {
+    win_check <- hubValidations::check_submission_window(opt$hub_path)
+    if (hubValidations::has_errors(win_check)) {
+      stop("❌ Trying to submit out of submission window")
+    }
+  }
+
+  # 3. Classify changes in the PR for further validations
+  files <- classify_changed_files(changed_files)
+
+  if (length(files$invalid_files) > 0) {
+    msg <- paste0(
+      "Invalid files found in the PR:\n",
+      paste(" -", files$invalid_files, collapse = "\n")
+    )
+    err <- hubValidations::new_hub_validations()
+    err$invalid_files <- hubValidations::validation_error(
+      msg,
+      check_name = "invalid_files_in_pr"
+    )
+    hubValidations::print_validations(err)
+    stop("❌ PR rejected: Invalid files are present.")
+  }
 
   validation_results <- list()
 
-  # 4. Validazione METADATA files (eventuali)
-  for (meta_file in metadata_files) {
+  # 4. Validate meta-data
+  for (meta_file in files$metadata_files) {
+    message("→ Validating metadata: ", meta_file)
     res <- hubValidations::validate_model_metadata(
       hub_path = opt$hub_path,
       file_path = meta_file
@@ -25,17 +88,18 @@ main <- function() {
     validation_results <- c(validation_results, list(res))
   }
 
-  # 5. Validazione MODEL OUTPUT files (chunked)
-  for (model_file in model_files) {
-    # Estraggo team_id da path per cercare il metadata corrispondente
-    team_id <- extract_team_id(model_file)
+  # 5. Validate model output (con chunk)
+  for (model_file in files$model_files) {
+    message("→ Validating model output: ", model_file)
 
-    metadata_path <- file.path(opt$hub_path, "model-metadata", paste0(team_id, ".yaml"))
-    if (!file.exists(metadata_path)) {
-      # Errore: metadata mancante per modello
+    team_id <- extract_team_id(model_file)
+    metadata_path_yaml <- file.path(opt$hub_path, "model-metadata", paste0(team_id, ".yaml"))
+    metadata_path_yml  <- file.path(opt$hub_path, "model-metadata", paste0(team_id, ".yml"))
+
+    if (!file.exists(metadata_path_yaml) && !file.exists(metadata_path_yml)) {
       err <- hubValidations::new_hub_validations()
       err$metadata_exists <- hubValidations::validation_error(
-        paste("Metadata mancante per modello:", team_id),
+        paste("Metadata file missing for model-output file:", team_id),
         check_name = "metadata_exists",
         file = model_file
       )
@@ -43,16 +107,18 @@ main <- function() {
       next
     }
 
-    # Validazione con splitting
     res <- validate_model_output_chunked(
       file_path = model_file,
-      hub_path = opt$hub_path,
-      derived_task_ids = opt$derived_task_ids
+      hub_path = opt$hub_path
     )
     validation_results <- c(validation_results, list(res))
   }
 
-  # 6. Aggregazione + errore finale
+  # 6. Aggregazione risultati
   combined <- do.call(hubValidations::combine_validations, validation_results)
+  hubValidations::print_validations(combined)
   hubValidations::check_for_errors(combined)
+  message("✅ Validations completed successfully.")
 }
+
+main()
