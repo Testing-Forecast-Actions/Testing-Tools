@@ -1,5 +1,7 @@
 #!/usr/bin/env Rscript
 
+source("RCode/validate_model_output_chunked.R")
+
 suppressPackageStartupMessages({
   library(optparse)
   library(hubValidations)
