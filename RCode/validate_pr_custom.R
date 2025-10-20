@@ -109,7 +109,11 @@ main <- function() {
 
     res <- validate_model_output_chunked(
       file_path = model_file,
-      hub_path = opt$hub_path
+      hub_path = opt$hub_path,
+      split_column = "location",
+      rows_per_chunk = 500000,
+      output_dir = "chunks",
+      log_file = paste0("validation_", gsub("/", "_", model_file), ".log")
     )
     validation_results <- c(validation_results, list(res))
   }
