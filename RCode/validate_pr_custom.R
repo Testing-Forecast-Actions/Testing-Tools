@@ -109,7 +109,7 @@ main <- function() {
       next
     }
 
-    res <- validate_model_output_chunked(
+    is_valid <- validate_model_output_chunked(
       file_path = model_file,
       hub_path = opt$hub_path,
       split_column = "location",
@@ -117,7 +117,15 @@ main <- function() {
       output_dir = "chunks",
       log_file = paste0("validation_", gsub("/", "_", model_file), ".log")
     )
-    validation_results <- c(validation_results, list(res))
+    if (!is_valid) {
+      err <- hubValidations::new_hub_validations()
+      err$validation_error <- hubValidations::validation_error(
+        paste("Error validating file:", model_file),
+        check_name = "model_output_validation",
+        file = model_file
+      )
+      validation_results <- c(validation_results, list(err))
+    }    
   }
 
   # 6. Aggregate results
