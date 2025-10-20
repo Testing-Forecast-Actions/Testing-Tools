@@ -88,7 +88,7 @@ main <- function() {
     validation_results <- c(validation_results, list(res))
   }
 
-  # 5. Validate model output (con chunk)
+  # 5. Validate model output (with chunks)
   for (model_file in files$model_files) {
     message("→ Validating model output: ", model_file)
 
@@ -118,7 +118,7 @@ main <- function() {
     validation_results <- c(validation_results, list(res))
   }
 
-  # 6. Aggregazione risultati
+  # 6. Aggregate results
   combined <- do.call(hubValidations::combine_validations, validation_results)
   hubValidations::print_validations(combined)
   hubValidations::check_for_errors(combined)
