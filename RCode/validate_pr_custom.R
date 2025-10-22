@@ -97,7 +97,8 @@ main <- function() {
     )
     err <- hubValidations::new_hub_validations()
     err$metadata_exists <- hubValidations::try_check(
-      stop(msg)
+      stop(msg),
+      file_path = NULL
     )
     
     # err$invalid_files <- hubValidations::validation_error(
