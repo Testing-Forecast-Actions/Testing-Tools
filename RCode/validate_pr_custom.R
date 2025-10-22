@@ -1,6 +1,20 @@
 #!/usr/bin/env Rscript
 
-source("RCode/validate_model_output_chunked.R")
+
+get_script_path <- function() {
+  args <- commandArgs(trailingOnly = FALSE)
+  file_arg <- grep("^--file=", args, value = TRUE)
+  if (length(file_arg) > 0) {
+    return(normalizePath(sub("^--file=", "", file_arg)))
+  } else {
+    stop("Impossibile determinare il percorso dello script.")
+  }
+}
+script_dir <- dirname(get_script_path())
+source(file.path(script_dir, "validate_model_output_chunked.R"))
+
+
+# source("./validate_model_output_chunked.R")
 
 suppressPackageStartupMessages({
   library(optparse)
@@ -49,14 +63,28 @@ main <- function() {
   )
   
   if (hubValidations::not_pass(cfg_check$valid_config)) {
-    hubValidations::print_validations(cfg_check)
+    # hubValidations::print_validations(cfg_check)
     stop("❌ Invalid hub configuration detected")
   }
 
   # 2. Check for submission window
   if (opt$check_submit_window) {
-    win_check <- hubValidations::check_submission_window(opt$hub_path)
-    if (hubValidations::has_errors(win_check)) {
+
+    submit_window_ref_date_from = c(
+      "file",
+      "file_path"
+    )
+    
+    checks_submission_time <-hubValidations::validate_submission_time(
+      hub_path = opt$hub_path,
+      file_path = changed_files,
+      ref_date_from = submit_window_ref_date_from
+    )
+
+
+    # win_check <- hubValidations::check_submission_window(opt$hub_path)
+    if (hubValidations::check_for_errors(checks_submission_time)) {
+      # hubValidations::print_validations(checks_submission_time)
       stop("❌ Trying to submit out of submission window")
     }
   }
@@ -74,7 +102,7 @@ main <- function() {
       msg,
       check_name = "invalid_files_in_pr"
     )
-    hubValidations::print_validations(err)
+    # hubValidations::print_validations(err)
     stop("❌ PR rejected: Invalid files are present.")
   }
 
@@ -130,7 +158,7 @@ main <- function() {
 
   # 6. Aggregate results
   combined <- do.call(hubValidations::combine_validations, validation_results)
-  hubValidations::print_validations(combined)
+  # hubValidations::print_validations(combined)
   hubValidations::check_for_errors(combined)
   message("✅ Validations completed successfully.")
 }
