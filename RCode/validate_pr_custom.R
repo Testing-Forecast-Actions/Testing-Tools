@@ -25,7 +25,7 @@ suppressPackageStartupMessages({
 classify_changed_files <- function(files) {
   files <- files[files != ""]
 
-  model_files <- files[grepl("^forecast-models/.*\\.parquet$", files)]
+  model_files <- files[grepl("^model-output/.*\\.parquet$", files)]
   metadata_files <- files[grepl("^model-metadata/.*\\.ya?ml$", files)]
   invalid_files <- setdiff(files, c(model_files, metadata_files))
 
