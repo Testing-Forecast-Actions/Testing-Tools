@@ -126,11 +126,17 @@ main <- function() {
 
     if (!file.exists(metadata_path_yaml) && !file.exists(metadata_path_yml)) {
       err <- hubValidations::new_hub_validations()
-      err$metadata_exists <- hubValidations::validation_error(
-        paste("Metadata file missing for model-output file:", team_id),
-        check_name = "metadata_exists",
-        file = model_file
+      err$metadata_exists <- hubValidations::try_check(
+        stop("Metadata file missing for model-output file: ", team_id),
+        file_path = model_file
       )
+
+      # err <- hubValidations::new_hub_validations()
+      # err$metadata_exists <- hubValidations::validation_error(
+      #   paste("Metadata file missing for model-output file:", team_id),
+      #   check_name = "metadata_exists",
+      #   file = model_file
+      # )
       validation_results <- c(validation_results, list(err))
       next
     }
