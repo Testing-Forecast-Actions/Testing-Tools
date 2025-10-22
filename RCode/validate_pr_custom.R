@@ -175,9 +175,14 @@ main <- function() {
   }
 
   # 6. Aggregate results
-  combined <- do.call(hubValidations::combine_validations, validation_results)
-  # hubValidations::print_validations(combined)
-  hubValidations::check_for_errors(combined)
+  # combined <- do.call(hubValidations::combine_validations, validation_results)
+  # # hubValidations::print_validations(combined)
+  # hubValidations::check_for_errors(combined)
+  has_errors <- any(!purrr::map_lgl(validation_results, hubValidations::check_for_errors))
+
+  if (has_errors) {
+    stop("❌ Some validations failed. Check logs for details.")
+  }
   message("✅ Validations completed successfully.")
 }
 
