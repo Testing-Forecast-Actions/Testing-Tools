@@ -90,6 +90,8 @@ main <- function() {
 
   # 3. Classify changes in the PR for further validations
   files <- classify_changed_files(changed_files)
+  message("📦 Lista dei files classificati:")
+  str(files)
 
   if (length(files$invalid_files) > 0) {
     msg <- paste0(
