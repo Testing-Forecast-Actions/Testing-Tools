@@ -81,10 +81,8 @@ main <- function() {
       ref_date_from = submit_window_ref_date_from
     )
 
-
-    # win_check <- hubValidations::check_submission_window(opt$hub_path)
-    if (hubValidations::check_for_errors(checks_submission_time)) {
-      # hubValidations::print_validations(checks_submission_time)
+    has_errors <- !hubValidations::check_for_errors(checks_submission_time)
+    if (has_errors) {
       stop("❌ Trying to submit out of submission window")
     }
   }
