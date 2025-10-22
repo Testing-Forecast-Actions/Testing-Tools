@@ -83,7 +83,8 @@ main <- function() {
 
     has_errors <- !hubValidations::check_for_errors(checks_submission_time)
     if (has_errors) {
-      stop("❌ Trying to submit out of submission window")
+      hubValidations::print_validations(checks_submission_time)
+      stop("❌ Submission failed: One or more files were submitted outside the allowed window.")
     }
   }
 
