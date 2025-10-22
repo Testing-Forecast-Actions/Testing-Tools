@@ -96,10 +96,14 @@ main <- function() {
       paste(" -", files$invalid_files, collapse = "\n")
     )
     err <- hubValidations::new_hub_validations()
-    err$invalid_files <- hubValidations::validation_error(
-      msg,
-      check_name = "invalid_files_in_pr"
+    err$metadata_exists <- hubValidations::try_check(
+      stop(msg)
     )
+    
+    # err$invalid_files <- hubValidations::validation_error(
+    #   msg,
+    #   check_name = "invalid_files_in_pr"
+    # )
     # hubValidations::print_validations(err)
     stop("❌ PR rejected: Invalid files are present.")
   }
@@ -151,11 +155,17 @@ main <- function() {
     )
     if (!is_valid) {
       err <- hubValidations::new_hub_validations()
-      err$validation_error <- hubValidations::validation_error(
-        paste("Error validating file:", model_file),
-        check_name = "model_output_validation",
-        file = model_file
+
+      err$metadata_exists <- hubValidations::try_check(
+        stop("Error validating file:", model_file),
+        file_path = model_file
       )
+      
+      # err$validation_error <- hubValidations::validation_error(
+      #   paste("Error validating file:", model_file),
+      #   check_name = "model_output_validation",
+      #   file = model_file
+      # )
       validation_results <- c(validation_results, list(err))
     }    
   }
