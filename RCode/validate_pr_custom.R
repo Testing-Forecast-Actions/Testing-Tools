@@ -75,12 +75,18 @@ main <- function() {
       "file_path"
     )
     
-    checks_submission_time <-hubValidations::validate_submission_time(
-      hub_path = opt$hub_path,
-      file_path = changed_files,
-      ref_date_from = submit_window_ref_date_from
-    )
+    submission_results <- lapply(changed_files, function(file) {
+      hubValidations::validate_submission_time(
+        hub_path = opt$hub_path,
+        file_path = file,
+        ref_date_from = c("file", "file_path")
+      )
+    })
 
+# Unisci i risultati in una lista unica
+checks_submission_time <- do.call(c, submission_results)
+
+    
     has_errors <- !hubValidations::check_for_errors(checks_submission_time)
     if (has_errors) {
       hubValidations::print_validations(checks_submission_time)
