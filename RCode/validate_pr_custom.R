@@ -55,6 +55,8 @@ main <- function() {
 
   message("=== Starting PR custom validations ===")
 
+  message("📁 Working directory: ", getwd())
+
   # 1. Check hub configuration
   cfg_check <- hubValidations::new_hub_validations()
   cfg_check$valid_config <- hubValidations::try_check(
@@ -83,8 +85,8 @@ main <- function() {
       )
     })
 
-# Unisci i risultati in una lista unica
-checks_submission_time <- do.call(c, submission_results)
+    # Unisci i risultati in una lista unica
+    checks_submission_time <- do.call(c, submission_results)
 
     
     has_errors <- !hubValidations::check_for_errors(checks_submission_time)
@@ -138,6 +140,10 @@ checks_submission_time <- do.call(c, submission_results)
     team_id <- extract_team_id(model_file)
     metadata_path_yaml <- file.path(opt$hub_path, "model-metadata", paste0(team_id, ".yaml"))
     metadata_path_yml  <- file.path(opt$hub_path, "model-metadata", paste0(team_id, ".yml"))
+
+    message("Looking for metadata at:")
+    message(" - ", metadata_path_yaml)
+    message(" - ", metadata_path_yml)
 
     if (!file.exists(metadata_path_yaml) && !file.exists(metadata_path_yml)) {
       err <- hubValidations::new_hub_validations()
