@@ -135,8 +135,7 @@ main <- function() {
   # 5. Validate model output (with chunks)
   for (model_file in files$model_files) {
     message("→ Validating model output: ", model_file)
-    model_file <- sub("^model-output/", "", model_file)
-
+    
     team_id <- extract_team_id(model_file)
     metadata_path_yaml <- file.path(opt$hub_path, "model-metadata", paste0(team_id, ".yaml"))
     metadata_path_yml  <- file.path(opt$hub_path, "model-metadata", paste0(team_id, ".yml"))
@@ -161,6 +160,9 @@ main <- function() {
       validation_results <- c(validation_results, list(err))
       next
     }
+
+    # remove model-output from path since it is later added in the validate module
+    model_file <- sub("^model-output/", "", model_file)
 
     is_valid <- validate_model_output_chunked(
       parquet_path = model_file,
