@@ -133,6 +133,7 @@ checks_submission_time <- do.call(c, submission_results)
   # 5. Validate model output (with chunks)
   for (model_file in files$model_files) {
     message("→ Validating model output: ", model_file)
+    model_file <- sub("^model-output/", "", model_file)
 
     team_id <- extract_team_id(model_file)
     metadata_path_yaml <- file.path(opt$hub_path, "model-metadata", paste0(team_id, ".yaml"))
