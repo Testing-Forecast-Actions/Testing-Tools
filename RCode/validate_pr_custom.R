@@ -39,7 +39,7 @@ classify_changed_files <- function(files) {
 # -- Extract team_id from path model-output/team-model/file.parquet
 extract_team_id <- function(file_path) {
   parts <- strsplit(file_path, "/")[[1]]
-  idx <- which(parts == "forecast-models")
+  idx <- which(parts == "model-output")
   parts[idx + 1]
 }
 
