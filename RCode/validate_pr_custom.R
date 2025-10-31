@@ -156,7 +156,7 @@ checks_submission_time <- do.call(c, submission_results)
     }
 
     is_valid <- validate_model_output_chunked(
-      file_path = model_file,
+      parquet_path = model_file,
       hub_path = opt$hub_path,
       split_column = "location",
       rows_per_chunk = 500000,
