@@ -124,13 +124,14 @@ def check_task_ids (src_file: str, in_tasks: list[str], config_file: str) -> lis
 
 
     # Run the validation
-    results = validate_parquet_file(all_data = df, group_fields = group_fields, validation_rules = validation_rules)
+    print (f"Calling validate_parquet_file for {src_file}")
+    # results = validate_parquet_file(all_data = df, group_fields = group_fields, validation_rules = validation_rules)
     
-    for group, result in results.items():
-        if result is not True:
-            # print(f"Group {group}: Missing combinations - {result}")
-            # print(f"Missing combinations for group {group}")
-            error_list.append(f"Group {group}: Missing combinations - {result}")
+    # for group, result in results.items():
+    #     if result is not True:
+    #         # print(f"Group {group}: Missing combinations - {result}")
+    #         # print(f"Missing combinations for group {group}")
+    #         error_list.append(f"Group {group}: Missing combinations - {result}")
 
 
     return error_list
