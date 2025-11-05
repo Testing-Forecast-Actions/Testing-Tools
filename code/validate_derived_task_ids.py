@@ -140,6 +140,8 @@ def check_task_ids (src_file: str, in_tasks: list[str], config_file: str) -> lis
 
 if __name__ == "__main__":
 
+    print ('Starting derived task ids validation!')
+    print (f'Input:\n list: {os.getenv("input_list")}\n derived tasks: {args.taskids}')
     # input_list = []
 
     # input_file = str(args.input)
