@@ -131,7 +131,7 @@ main <- function() {
     message("→ Validating metadata: ", meta_file)
     res <- hubValidations::validate_model_metadata(
       hub_path = opt$hub_path,
-      file_path = meta_file
+      file_path = basename(meta_file)
     )
     validation_results <- c(validation_results, list(res))
   }
