@@ -69,15 +69,22 @@ main <- function() {
     stop("❌ Invalid hub configuration detected")
   }
 
-  # 2. Check for submission window
-  if (opt$check_submit_window) {
+
+  # 2. Classify changes in the PR for further validations
+  files <- classify_changed_files(changed_files)
+  message("📦 Lista dei files classificati:")
+  str(files)
+
+  
+  # 3. Check for submission window
+  if (opt$check_submit_window && length(files$model_files) > 0) {
 
     submit_window_ref_date_from = c(
       "file",
       "file_path"
     )
     
-    submission_results <- lapply(changed_files, function(file) {
+    submission_results <- lapply(files$model_files, function(file) {
       hubValidations::validate_submission_time(
         hub_path = opt$hub_path,
         file_path = file,
@@ -96,11 +103,8 @@ main <- function() {
     }
   }
 
-  # 3. Classify changes in the PR for further validations
-  files <- classify_changed_files(changed_files)
-  message("📦 Lista dei files classificati:")
-  str(files)
-
+  
+  # 4. Look for invalid files
   if (length(files$invalid_files) > 0) {
     msg <- paste0(
       "Invalid files found in the PR:\n",
@@ -122,7 +126,7 @@ main <- function() {
 
   validation_results <- list()
 
-  # 4. Validate meta-data
+  # 5. Validate meta-data
   for (meta_file in files$metadata_files) {
     message("→ Validating metadata: ", meta_file)
     res <- hubValidations::validate_model_metadata(
@@ -132,7 +136,7 @@ main <- function() {
     validation_results <- c(validation_results, list(res))
   }
 
-  # 5. Validate model output (with chunks)
+  # 6. Validate model output (with chunks)
   for (model_file in files$model_files) {
     message("→ Validating model output: ", model_file)
     
@@ -189,7 +193,7 @@ main <- function() {
     }    
   }
 
-  # 6. Aggregate results
+  # 7. Aggregate results
   # combined <- do.call(hubValidations::combine_validations, validation_results)
   # # hubValidations::print_validations(combined)
   # hubValidations::check_for_errors(combined)
