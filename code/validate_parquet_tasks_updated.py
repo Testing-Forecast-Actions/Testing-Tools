@@ -9,14 +9,12 @@ from pathlib import Path
 parser = argparse.ArgumentParser()
 parser.add_argument('-c', '--configfile', default='hub-config/tasks.json')
 parser.add_argument('-t', '--taskids', default='target_end_date pop_group')
-
 args = parser.parse_args()
 
 def validate_parquet_file(all_data, group_fields, validation_rules):
     validation_fields = list(validation_rules.keys())
     validation_results = {}
     grouped = all_data.groupby(group_fields)
-
     for group_values, group_df in grouped:
         existing_combinations = set(tuple(x) for x in group_df[validation_fields].drop_duplicates().values)
         expected_combinations = set(product(*[validation_rules[field] for field in validation_fields]))
@@ -52,30 +50,55 @@ def read_hub_config(config_file: str, round_id: str, target: str) -> tuple[list[
 def check_task_ids(src_file: str, in_tasks: list[str], config_file: str) -> list[str]:
     print(f'Verify tasks: {in_tasks}')
     error_list = []
+
     round_id = Path(src_file).stem.split('-')[0]
     df = pd.read_parquet(src_file)
-    target = df['target'].iloc[0]
-    conf_pop_groups, conf_end_dates, conf_horizons = read_hub_config(config_file=config_file, round_id=round_id, target=target)
+    
+    # Cicla su ciascun target presente nel file
+    for target in df['target'].unique():
+        print(f"→ Checking target: {target}")
+        df_target = df[df['target'] == target].copy()
+        
+        # Carica la config appropriata per questo target
+        try:
+            conf_pop_groups, conf_end_dates, conf_horizons = read_hub_config(
+                config_file=config_file,
+                round_id=round_id,
+                target=target
+            )
+        except ValueError as e:
+            error_list.append(str(e))
+            continue
 
-    if 'target_end_date' in in_tasks:
-        in_ted = set([date_obj.strftime('%Y-%m-%d') for date_obj in df['target_end_date'].unique()])
-        if not in_ted.issubset(conf_end_dates):
-            error_list.append(f'Invalid target_end_date: {in_ted - set(conf_end_dates)}')
+        # 1️⃣ Controlla target_end_date
+        if 'target_end_date' in in_tasks and 'target_end_date' in df_target.columns:
+            in_ted = set([date_obj.strftime('%Y-%m-%d') for date_obj in df_target['target_end_date'].unique()])
+            if not in_ted.issubset(conf_end_dates):
+                error_list.append(f'Invalid target_end_date: {in_ted - set(conf_end_dates)} (target={target})')
 
-    if 'pop_group' in in_tasks:
-        in_pg = set(df['pop_group'].unique())
-        if not in_pg.issubset(conf_pop_groups):
-            error_list.append(f'Invalid pop_group_list: {in_pg - set(conf_pop_groups)} for target "{target}"')
+        # 2️⃣ Controlla pop_group coerentemente col target
+        if 'pop_group' in in_tasks and 'pop_group' in df_target.columns:
+            in_pg = set(df_target['pop_group'].unique())
+            if not in_pg.issubset(conf_pop_groups):
+                error_list.append(f'Invalid pop_group_list: {in_pg - set(conf_pop_groups)} for target "{target}"')
 
-    group_fields = ['round_id', 'scenario_id', 'target', 'location', 'output_type_id']
-    validation_rules = {
-        'pop_group': conf_pop_groups,
-        'horizon': conf_horizons,
-    }
-    results = validate_parquet_file(all_data=df, group_fields=group_fields, validation_rules=validation_rules)
-    for group, result in results.items():
-        if result is not True:
-            error_list.append(f"Group {group}: Missing combinations - {result}")
+        # 3️⃣ Validazione combinazioni (solo se servono)
+        group_fields = ['round_id', 'scenario_id', 'target', 'location', 'output_type_id']
+        validation_rules = {
+            'pop_group': conf_pop_groups,
+            'horizon': conf_horizons,
+        }
+
+        results = validate_parquet_file(
+            all_data=df_target,
+            group_fields=group_fields,
+            validation_rules=validation_rules
+        )
+
+        for group, result in results.items():
+            if result is not True:
+                error_list.append(f"Group {group} (target={target}): Missing combinations - {result}")
+
     return error_list
 
 if __name__ == "__main__":
